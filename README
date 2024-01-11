@@ -1,0 +1,5 @@
+BLOG GEN
+--------
+
+A simple, lightweight blog compiler written in C, with support for templating. 
+The generator can be used alongside a static webserver to host a web journal.
