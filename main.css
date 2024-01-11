@@ -1,0 +1,41 @@
+body {
+    font-family: system-ui, sans-serif;
+    color: rgb(100, 111, 121);
+    background: url(../img/bg.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+}
+
+article {
+    max-width: 700px;
+    margin: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0px 0px 10px white;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    background: rgb(28, 34, 39);
+    padding: 10px;
+    margin-top: 0;
+    color: white;
+}
+
+h1 {
+	background: rgb(50,75,125);
+	font-size: 30px;
+}
+
+a {
+    color: rgb(103, 144, 233);
+    text-decoration: none;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
