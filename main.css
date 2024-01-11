@@ -25,6 +25,10 @@ h1, h2, h3 {
     color: white;
 }
 
+h1 a, h2 a, h3 a {
+	color: white;
+}
+
 h1 {
 	background: rgb(50,75,125);
 	font-size: 30px;

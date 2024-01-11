@@ -28,7 +28,7 @@ struct tag tags[MAX_TAGS];
 
 struct tag *findTag(char *tag) {
 	for (int i = 0; i < MAX_TAGS; i++) {
-		if (tags[i].tag == tag) return &tags[i];
+		if (strcmp(tags[i].tag,tag) == 0) return &tags[i];
 		if (tags[i].tag[0] == '\0') {
 			strcpy(tags[i].tag,tag);
 			snprintf(tags[i].body,MAX_PATH,"<h1>Tag @%s</h1>",tag);
@@ -38,7 +38,7 @@ struct tag *findTag(char *tag) {
 }
 
 void gen(char *basePath) {
-	char outPath[MAX_PATH], inPath[MAX_PATH], text[MAX_PATH], outText[MAX_PATH];
+	char outPath[MAX_PATH], inPath[MAX_PATH], text[MAX_PATH], outText[MAX_PATH], title[MAX_PATH], desc[MAX_PATH];
 	int matchTotal = 0;
 	snprintf(outPath,MAX_PATH,"./out/!%s.html",basePath);
 	snprintf(inPath,MAX_PATH,"./in/%s",basePath);
@@ -55,12 +55,17 @@ void gen(char *basePath) {
 
 		if (text[0] != '#') {
 			snprintf(outText,MAX_PATH,"%s<p>%s</p>",outText,text);
+
 			FIND_MATCH("TITLE\n","<h1>%s</h1>")
-			FIND_MATCH("TAG\n","<a href='/@%s.html'>@%s</a>")
-			struct tag *found = findTag(text);
-			
+			snprintf(title,MAX_PATH,"%s",text);
+
+			FIND_MATCH("TAG\n","<a href='@%s.html'>@%s</a>")
+			struct tag *found = findTag(text);			
 			char *body = found->body;
-			snprintf(strchr(body,'\0'),MAX_PATH,"<li><a href='%s'>%s</a></li>\n", text, text);
+			snprintf(strchr(body,'\0'),MAX_PATH,"<a href='!%s.html'><h3>%s</h3></a><p><i>%s</i></p></p>\n", basePath, title, desc);
+
+			FIND_MATCH("DESC\n","<i>%s</i>");
+			snprintf(desc,MAX_PATH,"%s",text);
 		}
 
 		fputs(outText,outFile);
