@@ -9,7 +9,7 @@
 #define MAX_TAGS 1024
 #define MAX_DIR 1024
 
-#define HEADER "<!DOCTYPE html> <html><head><link rel='stylesheet' href='/main.css'></head><body><article>"
+#define HEADER "<!DOCTYPE html> <html><head><link rel='stylesheet' href='/main.css'><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><article>"
 
 #define FOOTER "</article></body></html>"
 
