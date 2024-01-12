@@ -37,11 +37,11 @@ struct tag *findTag(char *tag) {
 	}
 }
 
-void gen(char *basePath) {
+void gen(char *basePath, char *inPathI, char *outPathI) {
 	char outPath[MAX_PATH], inPath[MAX_PATH], text[MAX_PATH], outText[MAX_PATH], title[MAX_PATH], desc[MAX_PATH];
 	int matchTotal = 0;
-	snprintf(outPath,MAX_PATH,"./out/!%s.html",basePath);
-	snprintf(inPath,MAX_PATH,"./in/%s",basePath);
+	snprintf(outPath,MAX_PATH,"%s/!%s.html",outPathI,basePath);
+	snprintf(inPath,MAX_PATH,"%s/%s",inPathI,basePath);
 
 	FILE *inFile = fopen(inPath,"r");
 	FILE *outFile = fopen(outPath,"w");
@@ -51,7 +51,7 @@ void gen(char *basePath) {
 	fputs(HEADER,outFile);
 
 	while (fgets(text, MAX_PATH, inFile)) {
-		snprintf(outText,MAX_PATH,"%s<",text);
+		snprintf(outText,MAX_PATH,"%s",text);
 
 		if (text[0] != '#') {
 			snprintf(outText,MAX_PATH,"%s<p>%s</p>",outText,text);
@@ -74,13 +74,13 @@ void gen(char *basePath) {
 	fputs(FOOTER,outFile);
 }
 
-void list(char *basePath) {
+void list(char *basePath, char *outPath) {
     char path[MAX_DIR];
     struct dirent *dp;
     DIR *dir = opendir(basePath);
 
 	if (!dir) {
-		printf("directory not found: ./in\n");
+		printf("directory not found: %s\n",basePath);
 		return;
 	}
 
@@ -88,7 +88,7 @@ void list(char *basePath) {
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0) {
             char *name = dp->d_name;
 			printf("iterated over %s\n", name);
-        	gen(name);
+        	gen(name,basePath,outPath);
 			printf("finalized over %s\n", name);	
 		}	
     }
@@ -96,14 +96,14 @@ void list(char *basePath) {
     closedir(dir);
 }
 
-void tag() {
+void tag(char *outPathI) {
 	for (int i = 0; i < MAX_TAGS; i++) {
 		char outPath[MAX_PATH];
 
 		char *tag = tags[i].tag;
 		if (tag[0] == '\0') break;
 		
-		snprintf(outPath,MAX_PATH,"./out/@%s.html",tag);
+		snprintf(outPath,MAX_PATH,"%s/@%s.html",outPathI,tag);
 	
 		FILE *outFile = fopen(outPath,"w");
 		fputs(HEADER,outFile);
@@ -113,11 +113,16 @@ void tag() {
 	}
 }
 
-int main() {
-	mkdir("./out", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-	list("./in");
+int main(int argc, char** argv) {
+	if (argc < 3) {
+		printf("usage: %s [input dir] [output dir]\n",argv[0]);
+		return -1;
+	}
+
+	mkdir(argv[2], S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+	list(argv[1], argv[2]);
 	printf("done iterating, starting tags\n");
-	tag();
+	tag(argv[2]);
 	printf("done everything\n");
 	fflush(stdout);
 	return 0;
