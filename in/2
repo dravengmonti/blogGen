@@ -1,8 +1,16 @@
-<!DOCTYPE html> <html><head><link rel='stylesheet' href='/main.css'><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><article><p><!DOCTYPE html> <html><head><link rel='stylesheet' href='/main.css'><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><article><h1>Test post #2</h1><p>
-</p><p></p><i>Any part of the short description that is before a tag gets fed to the parser. </i><p>
-</p><p></p><a href='@test2.html'>@test2</a><p>
-</p><p></p><a href='@test3.html'>@test3</a><p>
-</p><p></p><a href='@test4.html'>@test4</a><p>
-</p><p></p><p>Some short description sentence.
-</p><p></p><p>
-</p><p></p></article></body></html></p></article></body></html>
+#TITLE
+Test post #2
+
+#DESC
+Any part of the short description that is before a tag gets fed to the parser. 
+
+#TAG
+test2
+
+#TAG
+test3
+
+#TAG
+test4
+
+Some short description sentence.
