@@ -5,7 +5,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_TEXT 4096
+#define MAX_TEXT 1024*1024
+#define MAX_TAG 1024
 
 #define HEADER "<!DOCTYPE html> <html><head><link rel='stylesheet' href='/main.css'><meta name='viewport' content='width=device-width, initial-scale=1'></head><body><article>"
 
@@ -113,16 +114,16 @@ void list(char *basePath, char *outPath) {
     free(path);
 }
 
-void tag(char *outPathI) {<F3>
-    tags = malloc(sizeof(struct tag) * MAX_TEXT);
+void tag(char *outPathI) {
+    tags = malloc(sizeof(struct tag) * MAX_TAG);
 
     for (int i = 0; i < MAX_TEXT; i++) {
-        char *outPath = malloc(MAX_TEXT);
+        char *outPath = malloc(PATH_MAX);
 
         char *tag = tags[i].tag;
         if (tag[0] == '\0') break;
         
-        snprintf(outPath,MAX_TEXT,"%s/@%s.html",outPathI,tag);
+        snprintf(outPath,PATH_MAX,"%s/@%s.html",outPathI,tag);
     
         FILE *outFile = fopen(outPath,"w");
         fputs(HEADER,outFile);
