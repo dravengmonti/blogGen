@@ -41,7 +41,7 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     char *path, *text, *outText, *title, *desc;
 
     // this is probably awful
-    path = malloc(PATH_MAX+1);
+    path = malloc(PATH_MAX);
     text = malloc(MAX_TEXT);
     outText = malloc(MAX_TEXT);
     title = malloc(MAX_TEXT);   
@@ -56,8 +56,6 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     snprintf(path,PATH_MAX,"%s/%s",inPathI,basePath);
     FILE *inFile = fopen(path,"r");
 
-    free(path);
-    
     if (!inFile || !outFile) return;
 
     fputs(HEADER,outFile);
@@ -115,7 +113,7 @@ void list(char *basePath, char *outPath) {
     free(path);
 }
 
-void tag(char *outPathI) {
+void tag(char *outPathI) {<F3>
     tags = malloc(sizeof(struct tag) * MAX_TEXT);
 
     for (int i = 0; i < MAX_TEXT; i++) {
