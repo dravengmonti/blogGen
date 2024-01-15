@@ -14,6 +14,7 @@
 
 #define FIND_MATCH(match, str) \
     } else if (strcmp(&(text[1]),match) == 0) { \
+        fgets(text, MAX_TEXT, inFile);  \
         char *ln = strchr(text,'\n'); \
         if (ln == NULL) break; \
         ln[0] = '\0'; \
@@ -67,8 +68,6 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
 
         if (text[0] != '#') {
             snprintf(outText,MAX_TEXT,"%s<p>%s</p>",outText,text);
-
-
 
             FIND_MATCH("TITLE\n","<h1>%s</h1>")
             snprintf(title,MAX_TEXT,"%s",text);
