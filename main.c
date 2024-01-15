@@ -13,10 +13,9 @@
 #define FOOTER "</article></body></html>"
 
 #define FIND_MATCH(match, str) \
-    } else if (strcmp(text+1,match) == 0) { \
-        fgets(text, MAX_TEXT, inFile); \
+    } else if (strcmp(&(text[1]),match) == 0) { \
         char *ln = strchr(text,'\n'); \
-        if (!ln) break; \
+        if (ln == NULL) break; \
         ln[0] = '\0'; \
         snprintf(outText,MAX_TEXT,str,text,text); \
 
@@ -28,7 +27,7 @@ struct tag {
 struct tag *tags;
 
 struct tag *findTag(char *tag) {
-    for (int i = 0; i < MAX_TEXT; i++) {
+    for (int i = 0; i < MAX_TAG; i++) {
         if (strcmp(tags[i].tag,tag) == 0) return &tags[i];
         if (tags[i].tag[0] == '\0') {
             strcpy(tags[i].tag,tag);
@@ -45,9 +44,9 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     path = malloc(PATH_MAX);
     text = malloc(MAX_TEXT);
     outText = malloc(MAX_TEXT);
-    title = malloc(MAX_TEXT);   
-    desc = malloc(MAX_TEXT);
-    
+    title = malloc(MAX_TEXT);
+    desc = malloc(MAX_TEXT);   
+ 
     int matchTotal = 0;
     snprintf(path,PATH_MAX,"%s/!%s.html",outPathI,basePath);
     
@@ -61,7 +60,7 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
 
     fputs(HEADER,outFile);
 
-    while (fgets(text, MAX_TEXT, inFile) && text) {
+    while (fgets(text, MAX_TEXT, inFile) ) {
         snprintf(outText,MAX_TEXT,"%s",text);
 
         if (text[0] == '\n' || text[0] == '\0') continue;
@@ -69,13 +68,21 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
         if (text[0] != '#') {
             snprintf(outText,MAX_TEXT,"%s<p>%s</p>",outText,text);
 
+
+
             FIND_MATCH("TITLE\n","<h1>%s</h1>")
             snprintf(title,MAX_TEXT,"%s",text);
 
             FIND_MATCH("TAG\n","<a href='@%s.html'>@%s</a>")
             struct tag *found = findTag(text);          
             char *body = found->body;
-            snprintf(strchr(body,'\0'),MAX_TEXT,"<a href='!%s.html'><h3>%s</h3></a><p><i>%s</i></p></p>\n", basePath, title, desc);
+
+            if (!body) break;  
+
+            body = strchr(body,'\0');
+            if (!body) break;
+
+            snprintf(body,MAX_TEXT,"<a href='!%s.html'><h3>%s</h3></a><p><i>%s</i></p></p>\n", basePath, title, desc);
 
             FIND_MATCH("DESC\n","<i>%s</i>");
             snprintf(desc,MAX_TEXT,"%s",text);
@@ -121,8 +128,6 @@ void list(char *basePath, char *outPath) {
 }
 
 void tag(char *outPathI) {
-    tags = malloc(sizeof(struct tag) * MAX_TAG);
-
     char *outPath = malloc(PATH_MAX);
 
     for (int i = 0; i < MAX_TEXT; i++) {
@@ -151,11 +156,17 @@ int main(int argc, char** argv) {
     }
 
     mkdir(argv[2], S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    
+    tags = malloc(sizeof(struct tag) * MAX_TAG);
+    
     list(argv[1], argv[2]);
     printf("done iterating, starting tags\n");
+    
     tag(argv[2]);
     printf("done everything\n");
+    
     fflush(stdout);
+    
     return 0;
 }
 
