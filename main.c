@@ -41,7 +41,7 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     char *path, *text, *outText, *title, *desc;
 
     // this is probably awful
-    path = malloc(PATH_MAX);
+    path = malloc(PATH_MAX+1);
     text = malloc(MAX_TEXT);
     outText = malloc(MAX_TEXT);
     title = malloc(MAX_TEXT);   
