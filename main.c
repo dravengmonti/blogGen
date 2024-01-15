@@ -50,10 +50,11 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     int matchTotal = 0;
     snprintf(path,PATH_MAX,"%s/!%s.html",outPathI,basePath);
     
-    FILE *inFile = fopen(path,"r");
-    
+    FILE *outFile = fopen(path,"r");
+   
+    memset(path,0,PATH_MAX); 
     snprintf(path,PATH_MAX,"%s/%s",inPathI,basePath);
-    FILE *outFile = fopen(path,"w");
+    FILE *inFile = fopen(path,"w");
 
     free(path);
     
