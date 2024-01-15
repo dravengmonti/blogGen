@@ -64,6 +64,8 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
     while (fgets(text, MAX_TEXT, inFile)) {
         snprintf(outText,MAX_TEXT,"%s",text);
 
+        if (text[0] == '\n' || text[0] == '\0') continue;
+
         if (text[0] != '#') {
             snprintf(outText,MAX_TEXT,"%s<p>%s</p>",outText,text);
 
