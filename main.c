@@ -61,7 +61,7 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
 
     fputs(HEADER,outFile);
 
-    while (fgets(text, MAX_TEXT, inFile)) {
+    while (fgets(text, MAX_TEXT, inFile) && text) {
         snprintf(outText,MAX_TEXT,"%s",text);
 
         if (text[0] == '\n' || text[0] == '\0') continue;
@@ -86,6 +86,10 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
 
     fputs(FOOTER,outFile);
 
+    fclose(inFile);
+    fclose(outFile);
+
+    free(path);
     free(text);
     free(outText);
     free(title);
@@ -119,8 +123,9 @@ void list(char *basePath, char *outPath) {
 void tag(char *outPathI) {
     tags = malloc(sizeof(struct tag) * MAX_TAG);
 
+    char *outPath = malloc(PATH_MAX);
+
     for (int i = 0; i < MAX_TEXT; i++) {
-        char *outPath = malloc(PATH_MAX);
 
         char *tag = tags[i].tag;
         if (tag[0] == '\0') break;
@@ -133,10 +138,9 @@ void tag(char *outPathI) {
         fputs(FOOTER,outFile);
     
         fclose(outFile);
-    
-        free(outPath);
     }
 
+    free(outPath);
     free(tags);
 }
 
