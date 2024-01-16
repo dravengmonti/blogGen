@@ -65,8 +65,10 @@ void gen(char *basePath, char *inPathI, char *outPathI) {
         snprintf(outText,MAX_TEXT,"%s",text);
 
         if (text[0] == '\n' || text[0] == '\0') continue;
-
-        if (text[0] != '#') {
+        
+        if (text[0] == '<') {
+            snprintf(outText,MAX_TEXT,"%s%s",outText,text);
+        } else if (text[0] != '#') {
             snprintf(outText,MAX_TEXT,"%s<p>%s</p>",outText,text);
 
             FIND_MATCH("TITLE\n","<h1>%s</h1>")
